@@ -40,12 +40,15 @@ public class PlayerController : MonoBehaviour
             isIdle = false;
         }
 
+        //Shooting
         if (Input.GetKeyDown (KeyCode.Space)) {
+            animator.SetTrigger("Shooting");
+
             EventManager.singleton.onPlayerShoot.Invoke ();
             GameObject bullet = Instantiate (projectile, transform.position, transform.rotation) as GameObject;
             Physics2D.IgnoreCollision (GetComponent<Collider2D> (), bullet.GetComponent<Collider2D> ());
         }
-        //rb2d.velocity = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * speed;
+
         animator.SetBool("IsIdle", isIdle);
     }
 }
