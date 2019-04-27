@@ -11,9 +11,9 @@ public class BulletBehaviour : MonoBehaviour {
 
     // Update is called once per frame
     void FixedUpdate () {
-        transform.Translate (transform.right * moveSpeed);
+        transform.Translate (transform.right * moveSpeed * transform.localScale.x);
         lifeTime -= Time.fixedDeltaTime;
-        if (lifeTime >= 0) {
+        if (lifeTime <= 0) {
             Destroy (gameObject);
         }
     }
