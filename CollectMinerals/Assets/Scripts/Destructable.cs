@@ -34,5 +34,6 @@ public class Destructable : MonoBehaviour {
 
     void Die () {
         spRenderer.sprite = deadSprite;
+        Destroy (GetComponent<Collider2D> ());
     }
 }
