@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             animator.SetTrigger("Jump");
-            AudioManager.singleton.gunSound.Play();
+            AudioManager.singleton.jumpSound.Play();
         }
 
         animator.SetBool ("IsIdle", isIdle);
