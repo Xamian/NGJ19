@@ -40,13 +40,20 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Shooting
-        if (Input.GetKeyDown (KeyCode.Space)) {
-            animator.SetTrigger ("Shooting");
+        if (Input.GetKeyDown (KeyCode.L)) {
+            animator.SetTrigger ("Shoot");
             AudioManager.singleton.gunSound.Play ();
             EventManager.singleton.onPlayerShoot.Invoke ();
             GameObject bullet = Instantiate (projectile, transform.position, transform.rotation) as GameObject;
             bullet.transform.localScale = transform.localScale;
             Physics2D.IgnoreCollision (GetComponent<Collider2D> (), bullet.GetComponent<Collider2D> ());
+        }
+
+        //Jumping
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            animator.SetTrigger("Jump");
+            AudioManager.singleton.jumpSound.Play();
         }
 
         animator.SetBool ("IsIdle", isIdle);
