@@ -8,5 +8,7 @@ public class EventManager : MonoBehaviour {
     public static UnityEvent onPlayerDie;
     public static UnityEvent onWinConditionAchieved;
     public static UnityEvent onPlayerWin;
+    public static UnityEvent onPause;
+    public static UnityEvent onUnpause;
 
 }

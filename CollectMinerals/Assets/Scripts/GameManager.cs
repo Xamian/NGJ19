@@ -4,9 +4,21 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    // Start is called before the first frame update
-    void Start () {
+    public static bool paused = false;
+    public static bool gameActive = true;
 
+    void Update () {
+        if (Input.GetKeyDown (KeyCode.Return)) {
+            paused = !paused;
+            if (paused) {
+                Time.timeScale = 0f;
+                EventManager.onPause.Invoke ();
+            } else {
+                EventManager.onUnpause.Invoke ();
+                Time.timeScale = 1f;
+            }
+
+        }
     }
 
 }
