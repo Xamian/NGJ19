@@ -12,6 +12,7 @@ public class EventManager : MonoBehaviour {
     public UnityEvent onPlayerWin = new UnityEvent ();
     public UnityEvent onPause = new UnityEvent ();
     public UnityEvent onUnpause = new UnityEvent ();
+    public UnityEvent onPlayerShoot = new UnityEvent ();
 
     public static EventManager singleton;
 
