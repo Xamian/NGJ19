@@ -48,7 +48,14 @@ public class PlanetGenerator : MonoBehaviour {
 		}
 
 		//Fill in with hexagons
-
+		for (int i = 0; i < numOfTilePerEdge; i++) {
+			float lerpValue = (i + 0.5f) / numOfTilePerEdge + 1;
+			Vector3 hexagonPoint = Vector3.Lerp (pentagonPoints[0], pentagonPoints[1], t);
+			Debug.Log (lerpValue);
+			Debug.Log (hexagonPoint);
+			Transform hexagon = (Instantiate (hexagonTile, hexagonPoint, Quaternion.identity) as GameObject).transform;
+			hexagon.up = hexagonPoint - originPoint;
+		}
 	}
 
 }
