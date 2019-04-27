@@ -9,7 +9,7 @@ public class ResourcePickup : MonoBehaviour {
     Sprite emptySprite;
     private void OnTriggerEnter2D (Collider2D other) {
         if (other.gameObject.tag == "Player") {
-            EventManager.onResourcePickup.Invoke (resources);
+            EventManager.singleton.onResourcePickup.Invoke (resources);
             GetComponent<SpriteRenderer> ().sprite = emptySprite;
             Destroy (this);
         }

@@ -10,7 +10,7 @@ public class LevelManager : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start () {
-        EventManager.onResourcePickup.AddListener (CheckForWinCondition);
+        EventManager.singleton.onResourcePickup.AddListener (CheckForWinCondition);
         currentOxygen = startOxygen;
     }
 
@@ -18,7 +18,7 @@ public class LevelManager : MonoBehaviour {
         if (GameManager.gameActive && !GameManager.paused) {
             currentOxygen -= Time.deltaTime;
             if (currentOxygen < 0) {
-                EventManager.onPlayerDie.Invoke ();
+                EventManager.singleton.onPlayerDie.Invoke ();
                 GameManager.gameActive = false;
             }
         }
@@ -27,7 +27,7 @@ public class LevelManager : MonoBehaviour {
     void CheckForWinCondition (int resourcesAdded) {
         currentPoints += resourcesAdded;
         if (resourcesAdded >= pointsToWin) {
-            EventManager.onWinConditionAchieved.Invoke ();
+            EventManager.singleton.onWinConditionAchieved.Invoke ();
         }
     }
 

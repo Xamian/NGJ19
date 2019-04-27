@@ -12,9 +12,9 @@ public class GameManager : MonoBehaviour {
             paused = !paused;
             if (paused) {
                 Time.timeScale = 0f;
-                EventManager.onPause.Invoke ();
+                EventManager.singleton.onPause.Invoke ();
             } else {
-                EventManager.onUnpause.Invoke ();
+                EventManager.singleton.onUnpause.Invoke ();
                 Time.timeScale = 1f;
             }
 
