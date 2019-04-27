@@ -28,6 +28,7 @@ public class Destructable : MonoBehaviour {
         if (hitPoints <= 0) {
             Die ();
         } else {
+            AudioManager.singleton.destructableHitSound.Play ();
             animControl.SetTrigger ("Hit");
             if (hitPoints == weakHitPointLimit) {
                 spRenderer.sprite = dyingSprite;
@@ -36,6 +37,7 @@ public class Destructable : MonoBehaviour {
     }
 
     void Die () {
+        AudioManager.singleton.destructableKillSound.Play ();
         spRenderer.sprite = deadSprite;
         Destroy (GetComponent<Collider2D> ());
     }

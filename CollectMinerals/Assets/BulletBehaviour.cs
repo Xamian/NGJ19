@@ -19,7 +19,6 @@ public class BulletBehaviour : MonoBehaviour {
     }
 
     void OnCollisionEnter2D (Collision2D collisionInfo) {
-        Debug.Log ("Hit!");
         Destructable hitDestrucable = collisionInfo.gameObject.GetComponent<Destructable> ();
         if (hitDestrucable != null) {
             hitDestrucable.Hit ();

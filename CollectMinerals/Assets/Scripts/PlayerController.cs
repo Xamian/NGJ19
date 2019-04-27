@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour {
         //Shooting
         if (Input.GetKeyDown (KeyCode.Space)) {
             animator.SetTrigger ("Shooting");
-
+            AudioManager.singleton.gunSound.Play ();
             EventManager.singleton.onPlayerShoot.Invoke ();
             GameObject bullet = Instantiate (projectile, transform.position, transform.rotation) as GameObject;
             bullet.transform.localScale = transform.localScale;
