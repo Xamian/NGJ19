@@ -9,7 +9,10 @@ public class Destructable : MonoBehaviour {
     Sprite dyingSprite;
 
     [SerializeField]
-    int hitPoints = 1;
+    int hitPoints = 5;
+
+    [SerializeField]
+    int weakHitPointLimit = 2;
 
     Animator animControl;
 
@@ -26,7 +29,7 @@ public class Destructable : MonoBehaviour {
             Die ();
         } else {
             animControl.SetTrigger ("Hit");
-            if (hitPoints == 1) {
+            if (hitPoints == weakHitPointLimit) {
                 spRenderer.sprite = dyingSprite;
             }
         }
