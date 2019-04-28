@@ -5,7 +5,6 @@ using UnityEngine;
 public class WalkEvents : MonoBehaviour {
     int audioIndex = 0;
     public void FootStep () {
-        Debug.Log ("Step!");
         AudioSource[] audioFiles = AudioManager.singleton.walkSound;
         int playIndex;
         do {

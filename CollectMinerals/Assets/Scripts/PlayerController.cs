@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
@@ -6,10 +7,23 @@ public class PlayerController : MonoBehaviour {
     private Animator animator;
     [SerializeField]
     GameObject projectile;
+    [SerializeField]
+    float jumpTime = 1.5f;
+    [SerializeField]
+    float dieRotateSpeed = 3f;
+    bool jumping = false;
+    bool isAlive = true;
+
+    Collider2D coll;
+
+    List<Collider2D> ignoredColliders = new List<Collider2D> ();
 
     // Use this for initialization
     void Start () {
         animator = GetComponent<Animator> ();
+        coll = GetComponent<Collider2D> ();
+        isAlive = true;
+        jumping = false;
     }
 
     void Update () {
@@ -50,12 +64,61 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Jumping
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            animator.SetTrigger("Jump");
-            AudioManager.singleton.jumpSound.Play();
+        if (Input.GetKeyDown (KeyCode.Space)) {
+            animator.SetBool ("Jump", true);
+            AudioManager.singleton.jumpSound.Play ();
+            jumping = true;
+            StartCoroutine (Jump ());
         }
 
         animator.SetBool ("IsIdle", isIdle);
+    }
+
+    IEnumerator Jump () {
+        float jumpTimeLeft = jumpTime;
+        while (jumpTimeLeft > 0 && Input.GetKey (KeyCode.Space)) {
+            yield return new WaitForEndOfFrame ();
+            jumpTimeLeft -= Time.deltaTime;
+
+        }
+        animator.SetBool ("Jump", false);
+        jumping = false;
+        AudioManager.singleton.jumpSound.Stop ();
+        foreach (Collider2D ignoredCollider in ignoredColliders) {
+            Physics2D.IgnoreCollision (coll, ignoredCollider, false);
+        }
+    }
+
+    private void OnCollisionEnter2D (Collision2D other) {
+        if (other.gameObject.tag == "PitTile" && jumping) {
+            Physics2D.IgnoreCollision (coll, other.collider, true);
+            ignoredColliders.Add (other.collider);
+        }
+    }
+
+    private void OnCollisionStay2D (Collision2D other) {
+        if (other.gameObject.tag == "PitTile" && !jumping) {
+            this.enabled = false;
+            StartCoroutine (Fall ());
+        }
+    }
+    private void OnCollisionExit2D (Collision2D other) {
+        if (other.gameObject.tag == "PitTile") {
+            Physics2D.IgnoreCollision (coll, other.otherCollider, false);
+        }
+    }
+
+    IEnumerator Fall () {
+        float fallTime = 0.8f;
+        float fallTimeLeft = fallTime;
+        Vector3 startScale = transform.localScale;
+        animator.SetTrigger ("Fall");
+        while (fallTimeLeft > 0) {
+            transform.localScale = startScale * (fallTimeLeft / fallTime);
+            transform.Rotate (new Vector3 (0, 0, dieRotateSpeed * Time.deltaTime));
+            yield return new WaitForEndOfFrame ();
+            fallTimeLeft -= Time.deltaTime;
+        }
+        EventManager.singleton.onPlayerDie.Invoke ();
     }
 }
