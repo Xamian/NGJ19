@@ -10,6 +10,7 @@ public class ResourcePickup : MonoBehaviour {
     private void OnTriggerEnter2D (Collider2D other) {
         if (other.gameObject.tag == "Player") {
             EventManager.singleton.onResourcePickup.Invoke (resources);
+            AudioManager.singleton.pickUpSound.Play ();
             GetComponent<SpriteRenderer> ().sprite = emptySprite;
             Destroy (this);
         }
