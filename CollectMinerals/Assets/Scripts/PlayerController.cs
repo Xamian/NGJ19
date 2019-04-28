@@ -6,10 +6,17 @@ public class PlayerController : MonoBehaviour {
     private Animator animator;
     [SerializeField]
     GameObject projectile;
+    [SerializeField]
+    float jumpTime = 1.5f;
+    bool jumping = false;
+    bool isAlive = true;
+
+    Collider2D coll;
 
     // Use this for initialization
     void Start () {
         animator = GetComponent<Animator> ();
+        coll = GetComponent<Collider2D> ();
     }
 
     void Update () {
@@ -50,12 +57,55 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Jumping
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            animator.SetTrigger("Jump");
-            AudioManager.singleton.jumpSound.Play();
+        if (Input.GetKeyDown (KeyCode.Space)) {
+            animator.SetBool ("Jump", true);
+            AudioManager.singleton.jumpSound.Play ();
+            jumping = true;
+            StartCoroutine (Jump ());
         }
 
         animator.SetBool ("IsIdle", isIdle);
+    }
+
+    IEnumerator Jump () {
+        float jumpTimeLeft = jumpTime;
+        while (jumpTimeLeft > 0 && Input.GetKey (KeyCode.Space)) {
+            yield return new WaitForEndOfFrame ();
+            jumpTimeLeft -= Time.deltaTime;
+
+        }
+        animator.SetBool ("Jump", false);
+        jumping = false;
+        AudioManager.singleton.jumpSound.Stop ();
+    }
+
+    private void OnCollisionEnter2D (Collision2D other) {
+        if (other.gameObject.tag == "PitTile" && jumping) {
+            Physics2D.IgnoreCollision (coll, other.collider, true);
+        }
+    }
+
+    private void OnCollisionStay2D (Collision2D other) {
+        if (other.gameObject.tag == "PitTile" && !jumping) {
+            this.enabled = false;
+            StartCoroutine (Fall ());
+        }
+    }
+    private void OnCollisionExit2D (Collision2D other) {
+        if (other.gameObject.tag == "PitTile") {
+            Physics2D.IgnoreCollision (coll, other.collider, false);
+        }
+    }
+
+    IEnumerator Fall () {
+        float fallTime = 1.0f;
+        float fallTimeLeft = fallTime;
+        Vector3 startScale = transform.localScale;
+        while (fallTimeLeft > 0) {
+            transform.localScale = startScale * (fallTimeLeft / fallTime);
+            transform.Rotate (new Vector3 (0, 0, Time.deltaTime));
+            yield return new WaitForEndOfFrame ();
+            fallTimeLeft -= Time.deltaTime;
+        }
     }
 }
