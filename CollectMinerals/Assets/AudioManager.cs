@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour {
-    public AudioSource gunSound, pickUpSound, destructableHitSound, destructableKillSound, jumpSound;
+    public AudioSource gunSound, pickUpSound, destructableHitSound, destructableKillSound, jumpSound, fallsound;
     public AudioSource[] walkSound;
 
     public static AudioManager singleton;
