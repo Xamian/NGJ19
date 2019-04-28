@@ -109,6 +109,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     IEnumerator Fall () {
+        AudioManager.singleton.fallsound.Play();
         float fallTime = 0.8f;
         float fallTimeLeft = fallTime;
         Vector3 startScale = transform.localScale;
