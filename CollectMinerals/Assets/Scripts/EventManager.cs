@@ -16,7 +16,7 @@ public class EventManager : MonoBehaviour {
 
     public static EventManager singleton;
 
-    void Start () {
+    void Awake () {
         if (singleton == null) {
             singleton = this;
         } else {
