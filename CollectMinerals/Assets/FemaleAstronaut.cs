@@ -9,6 +9,10 @@ public class FemaleAstronaut : MonoBehaviour {
     int requiredCrystals = 70;
     [SerializeField]
     Text speechbubble;
+    [SerializeField]
+    Sprite loveSprite;
+
+    SpriteRenderer spRenderer;
     int collectedCrystals = 0;
 
     // Start is called before the first frame update
@@ -16,6 +20,7 @@ public class FemaleAstronaut : MonoBehaviour {
         speechbubble.text = "I need at least" + requiredCrystals + " crystals!";
         EventManager.singleton.onResourcePickup.AddListener (AddCrystals);
         collectedCrystals = 0;
+        spRenderer = GetComponent<SpriteRenderer> ();
     }
 
     void AddCrystals (int crystals) {
@@ -24,9 +29,11 @@ public class FemaleAstronaut : MonoBehaviour {
 
     private void OnTriggerEnter2D (Collider2D other) {
         if (other.gameObject.tag == "Player") {
+            other.gameObject.GetComponent<Animator> ().SetTrigger ("Win");
             if (collectedCrystals >= requiredCrystals) {
                 EventManager.singleton.onPlayerWin.Invoke ();
                 speechbubble.text = "Yay! <3";
+                spRenderer.sprite = loveSprite;
                 StartCoroutine (NextLevel ());
             }
         }
